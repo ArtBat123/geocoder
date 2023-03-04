@@ -19,7 +19,7 @@ public class TestController {
         this.service = service;
     }
 
-    @GetMapping(value = "/check/{id}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public Test getTest(@PathVariable Integer id,
                         @RequestParam String name) {
         return service.build(id, name);
