@@ -41,8 +41,13 @@ public class TestController {
     }
 
     @GetMapping(value = "/search", produces = APPLICATION_JSON_VALUE)
-    public NominatimPlace test(@RequestParam String query) {
+    public NominatimPlace search(@RequestParam String query) {
       return nominatimClient.search(query, "json").get(0);
+    }
+    @GetMapping(value = "/reverse", produces = APPLICATION_JSON_VALUE)
+    public NominatimPlace reverse(@RequestParam String latitude,
+                                  @RequestParam String longitude) {
+      return nominatimClient.reverse(latitude, longitude, "json");
     }
 
     @GetMapping(value = "/not_found")
