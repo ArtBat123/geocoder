@@ -17,9 +17,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:2.0.0.RELEASE'
 
-	implementation 'com.h2database:h2:2.1.214'
+  implementation 'org.postgresql:postgresql:42.5.4'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 dependencyManagement {
