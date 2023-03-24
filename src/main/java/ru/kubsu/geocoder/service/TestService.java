@@ -1,36 +1,38 @@
 package ru.kubsu.geocoder.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Indexed;
 import org.springframework.stereotype.Service;
 import ru.kubsu.geocoder.model.Test;
 import ru.kubsu.geocoder.repository.TestRepository;
 
+/**
+ *
+ */
 @Service
 public class TestService {
 
-    private TestRepository repository;
+    private final TestRepository repository;
 
     @Autowired
-    public TestService(TestRepository repository) {
+    public TestService(final TestRepository repository) {
         this.repository = repository;
     }
 
-    public Test build(Integer id, String name) {
-        Test test = new Test();
+    public Test build(final Integer id, final String name) {
+        final Test test = new Test();
         test.setId(id);
         test.setName(name);
-        return  test;
+        return test;
     }
 
-    public void save(String name) {
-        Test test = new Test();
+    public void save(final String name) {
+        final Test test = new Test();
         test.setName(name);
 
         repository.save(test);
     }
 
-    public Test load(String name) {
+    public Test load(final String name) {
         return repository.findByName(name)
                 .orElse(null);
     }
