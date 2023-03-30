@@ -36,12 +36,16 @@ public interface NominatimClient {
     @RequestMapping(method = RequestMethod.GET, value = "/search", produces = "application/json")
     List<NominatimPlace> search(@RequestParam("q") String query,
                                 @RequestParam("format") String format);
-    @RequestMapping(method = RequestMethod.GET, value = "/reverse", produces = "application/json")
-    NominatimPlace reverse(@RequestParam("lat") String latitude,
-                           @RequestParam("lon") String longitude,
-                           @RequestParam("format") String format);
 
-  default NominatimPlace reverse(final String latitude, final String longitude) {
-    return reverse(latitude, longitude, JSON_FORMAT);
-  }
+    default Optional<NominatimPlace> reverse(final Double latitude, final Double longitude) {
+      try {
+        return Optional.of(reverse(latitude, longitude, JSON_FORMAT));
+      } catch (Exception ex) {
+        return Optional.empty();
+      }
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/reverse", produces = "application/json")
+    NominatimPlace reverse(@RequestParam("lat") Double latitude,
+                           @RequestParam("lon") Double longitude,
+                           @RequestParam("format") String format);
 }

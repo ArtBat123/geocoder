@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
 import ru.kubsu.geocoder.dto.RestApiError;
 import ru.kubsu.geocoder.model.Mark;
+import ru.kubsu.geocoder.repository.AddressRepository;
 import ru.kubsu.geocoder.repository.TestRepository;
 import ru.kubsu.geocoder.util.TestUtil;
 
@@ -29,19 +30,20 @@ class TestControllerTest {
 
   @Autowired
   private TestRepository repository;
+  @Autowired
+  private AddressRepository addressRepository;
 
 //  @Autowired
 //  public TestControllerTest(TestRepository repository) {
 //    this.repository = repository;
 //  }
+  @BeforeEach
+  void setUp() {
+    addressRepository.deleteAll();
+  }
 
   @BeforeAll
   static void beforeAll() {
-  }
-
-  @BeforeEach
-  void setUp() {
-    System.out.println("BeforeEach");
   }
 
   @AfterEach
@@ -112,7 +114,7 @@ class TestControllerTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
 
     ru.kubsu.geocoder.model.Test findedTest = repository.findByName(paramName).orElse(null);
-    Assert.isTrue(findedTest != null);
+    assertTrue(findedTest != null);
   }
 
   @Test

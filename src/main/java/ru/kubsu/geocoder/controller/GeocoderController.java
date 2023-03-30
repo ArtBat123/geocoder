@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kubsu.geocoder.client.NominatimClient;
-import ru.kubsu.geocoder.dto.NominatimPlace;
+import ru.kubsu.geocoder.model.Address;
+import ru.kubsu.geocoder.service.AddressService;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -18,20 +19,20 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("geocoder")
 public class GeocoderController {
 
-  private final NominatimClient nominatimClient;
-
+  private final AddressService addressService;
   @Autowired
-  public GeocoderController(final NominatimClient nominatimClient) {
-    this.nominatimClient = nominatimClient;
+  public GeocoderController(final AddressService addressService) {
+    this.addressService = addressService;
   }
   @GetMapping(value = "/search", produces = APPLICATION_JSON_VALUE)
-  public ResponseEntity<NominatimPlace> search(@RequestParam final String query) {
-    return nominatimClient.search(query).map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
+  public ResponseEntity<Address> search(@RequestParam final String query) {
+    return addressService.search(query).map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
   }
   @GetMapping(value = "/reverse", produces = APPLICATION_JSON_VALUE)
-  public NominatimPlace reverse(@RequestParam final String latitude,
-                                @RequestParam final String longitude) {
-    return nominatimClient.reverse(latitude, longitude, "json");
+  public ResponseEntity<Address> reverse(@RequestParam final Double latitude,
+                                         @RequestParam final Double longitude) {
+    return addressService.reverse(latitude, longitude).map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
+      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
   }
 }
